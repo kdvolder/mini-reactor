@@ -7,34 +7,13 @@ import com.github.kdvolder.minireactor.Flux;
  */
 public class Main {
 
-//	public static void main(String[] args) {
-//		Flux<Integer> empty = Flux.empty();
-//		
-//		empty.subscribe(new Subscriber<Integer>() {
-//
-//			@Override
-//			public void onSubscribe(Subscription s) {
-//				System.out.println("onSub: "+s);
-//			}
-//
-//			@Override
-//			public void onNext(Integer t) {
-//				System.out.println("onNxt: "+t);
-//			}
-//
-//			@Override
-//			public void onError(Throwable t) {
-//				System.out.println("onErr: "+t);
-//			}
-//
-//			@Override
-//			public void onComplete() {
-//				System.out.println("onCmp!");
-//			}
-//		});
-//	}
-//	
 	public static void main(String[] args) {
+		//Edit line below to pick one of the numbered 'main' methods to run.
+		main1();
+	}
+
+
+	public static void main1() {
 		Flux<Integer> num = 
 				Flux.range(0, 1000)
 				.filter((x) -> x%3==0)
@@ -45,9 +24,9 @@ public class Main {
 		});
 	}
 	
-//	public static void main(String[] args) {
-//		Flux<Integer> num = Flux.range(0, 10);
-//		num.consume((i) -> System.out.println(i));
-//	}
+	public static void main2() {
+		Flux<Integer> num = Flux.range(0, 10);
+		num.consume((i) -> System.out.println(i));
+	}
 	
 }
