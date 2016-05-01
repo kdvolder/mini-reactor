@@ -8,6 +8,7 @@ import org.reactivestreams.Subscription;
 
 public abstract class Flux<T> implements Publisher<T> {
 
+	@SuppressWarnings("unchecked")
 	public static <T> Flux<T> from(Publisher<? extends T> source) {
 		if (source instanceof Flux) {
 			return (Flux<T>) source;
