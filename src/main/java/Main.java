@@ -12,7 +12,6 @@ public class Main {
 		main1();
 	}
 
-
 	public static void main1() {
 		Flux<Integer> num = 
 				Flux.range(0, 1000)
