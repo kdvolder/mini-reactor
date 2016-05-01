@@ -9,7 +9,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		//Edit line below to pick one of the numbered 'main' methods to run.
-		main1();
+		main3();
+	}
+
+	private static void main3() {
+		Flux.range(0, 1000)
+		.drop(14)
+		.take(4)
+		.consume(System.out::println);
 	}
 
 	public static void main1() {
@@ -17,6 +24,7 @@ public class Main {
 				Flux.range(0, 1000)
 				.filter((x) -> x%3==0)
 				.take(5)
+				.take(10)
 				;
 		num.consume((x) -> {
 			System.out.println(x);

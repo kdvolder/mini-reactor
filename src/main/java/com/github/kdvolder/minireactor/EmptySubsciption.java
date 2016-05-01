@@ -7,15 +7,8 @@ import org.reactivestreams.Subscriber;
  */
 public class EmptySubsciption<T> extends BaseSubscription<T> {
 	
-	private Throwable error = null;
-	
 	public EmptySubsciption(Subscriber<? super T> out) {
-		this(out, null);
-	}
-
-	public EmptySubsciption(Subscriber<? super T> out, Throwable error) {
 		super(out);
-		this.error = error;
 	}
 
 	@Override

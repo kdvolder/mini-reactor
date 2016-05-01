@@ -8,6 +8,13 @@ import org.reactivestreams.Subscription;
 
 public abstract class Flux<T> implements Publisher<T> {
 
+	public static <T> Flux<T> from(Publisher<? extends T> source) {
+		if (source instanceof Flux) {
+			return (Flux<T>) source;
+		}
+		return new IdentityTransformerFlux<T>(source);
+	}
+
 	public static <T> Flux<T> error(Throwable e) {
 		return new ErrorFlux<T>(e);
 	}
@@ -24,7 +31,15 @@ public abstract class Flux<T> implements Publisher<T> {
 			return empty();
 		}
 	}
-	
+
+	public final Flux<T> drop(long n) {
+		if (n>0) {
+			return new DropFlux<T>(this, n);
+		} else {
+			return this;
+		}
+	}
+
 	public final Flux<T> filter(Predicate<? super T> pred) {
 		return new FilterFlux<T>(this, pred);
 	}
