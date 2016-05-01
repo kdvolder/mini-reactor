@@ -31,7 +31,7 @@ public abstract class Flux<T> implements Publisher<T> {
 
 	public final Cancellation consume(Consumer<? super T> consumer) {
 		SubcriptionCancelation cancel = new SubcriptionCancelation();
-		this.subscribe(new AbsractSubscriber<T>() {
+		this.subscribe(new BasicSubscriber<T>() {
 			@Override
 			public void onSubscribe(Subscription s) {
 				cancel.bind(s);

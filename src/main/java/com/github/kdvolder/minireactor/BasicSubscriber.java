@@ -9,13 +9,13 @@ import org.reactivestreams.Subscription;
  * If no methods are overridden the implementation is already complete
  * and does the following:
  * <ul>
- *   <li> Generates infinite demand on subscription
- *   <li> All incoming signals onNext, onError, onComplete are simply ignored.
+ *   <li> Generates infinite demand on its subscription upon receiving 'onSubscribe' signal.
+ *   <li> All other signals (onNext, onError, onComplete) are simply ignored.
  * </ul>
- * 
+ *
  * @author Kris De Volder
  */
-public class AbsractSubscriber<T> implements Subscriber<T> {
+public class BasicSubscriber<T> implements Subscriber<T> {
 
 	@Override
 	public void onSubscribe(Subscription s) {
