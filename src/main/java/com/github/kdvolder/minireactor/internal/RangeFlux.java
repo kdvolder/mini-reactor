@@ -1,6 +1,8 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import org.reactivestreams.Subscriber;
+
+import com.github.kdvolder.minireactor.Flux;
 
 /**
  * A Flux producing a range of elements starting at a given 'from'

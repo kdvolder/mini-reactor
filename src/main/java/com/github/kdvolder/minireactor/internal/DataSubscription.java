@@ -1,4 +1,4 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

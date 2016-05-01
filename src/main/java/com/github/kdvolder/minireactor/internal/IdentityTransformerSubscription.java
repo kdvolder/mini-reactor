@@ -1,4 +1,4 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -7,7 +7,7 @@ public class IdentityTransformerSubscription<T> extends BaseSubscription<T> impl
 	
 	Subscription inSubscription;
 
-	IdentityTransformerSubscription(Subscriber<? super T> out) {
+	public IdentityTransformerSubscription(Subscriber<? super T> out) {
 		super(out);
 	}
 

@@ -1,9 +1,11 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import java.util.function.Predicate;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+
+import com.github.kdvolder.minireactor.Flux;
 
 public class FilterFlux<T> extends Flux<T> {
 

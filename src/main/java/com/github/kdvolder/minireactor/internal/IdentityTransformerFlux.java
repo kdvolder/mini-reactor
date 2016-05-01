@@ -1,7 +1,9 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
+
+import com.github.kdvolder.minireactor.Flux;
 
 /**
  * A transformer flux wraps a 'source' Publisher and passes data from

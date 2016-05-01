@@ -1,6 +1,8 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import org.reactivestreams.Subscription;
+
+import com.github.kdvolder.minireactor.Cancellation;
 
 /**
  * Wrapper around a {@link Subscription} implementing the {@link Cancellation} interface.
