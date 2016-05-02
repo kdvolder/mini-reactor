@@ -2,7 +2,6 @@ package com.github.kdvolder.minireactor.internal;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 public class IdentityTransformerSubscription<T> extends TransformerSubscription<T,T> {
 

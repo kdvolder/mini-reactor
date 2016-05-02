@@ -14,11 +14,11 @@ public class Main {
 
 	private static void main4() {
 		Flux.of("hello", "goodbye", "cat", "dog", "hoho")
-//		.map((word) -> word.length())
+		.map((word) -> word.length())
 		.consume(System.out::println);
 	}
 
-	private static void main3() {
+	public static void main3() {
 		Flux.range(0, 1000)
 		.drop(14)
 		.take(4)

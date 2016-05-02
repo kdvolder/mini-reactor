@@ -3,6 +3,7 @@ package com.github.kdvolder.minireactor;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.reactivestreams.Publisher;
@@ -20,11 +21,11 @@ import com.github.kdvolder.minireactor.internal.TakeFlux;
 public abstract class Flux<T> implements Publisher<T> {
 
 	@SuppressWarnings("unchecked")
-	public static <T> Flux<T> from(Publisher<? extends T> source) {
+	public static <T, A extends T> Flux<T> from(Publisher<A> source) {
 		if (source instanceof Flux) {
 			return (Flux<T>) source;
 		}
-		return new IdentityTransformerFlux<T>(source);
+		return new IdentityTransformerFlux<T>((Publisher<T>)source);
 	}
 
 	public static <T> Flux<T> error(Throwable e) {
@@ -98,6 +99,10 @@ public abstract class Flux<T> implements Publisher<T> {
 			return empty();
 		}
 		return new DataFlux<T>(Arrays.asList(elements));
+	}
+
+	public <R> Flux<R> map(Function<T, R> f) {
+		return new MapFlux<T, R>(this, f);
 	}
 
 }

@@ -13,7 +13,7 @@ public class DropFlux<T> extends IdentityTransformerFlux<T> {
 	}
 	
 	@Override
-	protected Subscriber<T> createSubscription(Subscriber<? super T> out) {
+	protected IdentityTransformerSubscription<T> createSubscription(Subscriber<? super T> out) {
 		return new IdentityTransformerSubscription<T>(in, out) {
 
 			long dropped = 0;
