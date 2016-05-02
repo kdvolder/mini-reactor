@@ -9,7 +9,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		//Edit line below to pick one of the numbered 'main' methods to run.
-		main3();
+		main4();
+	}
+
+	private static void main4() {
+		Flux.of("hello", "goodbye", "cat", "dog", "hoho")
+//		.map((word) -> word.length())
+		.consume(System.out::println);
 	}
 
 	private static void main3() {

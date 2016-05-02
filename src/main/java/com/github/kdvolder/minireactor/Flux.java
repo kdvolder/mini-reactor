@@ -1,5 +1,7 @@
 package com.github.kdvolder.minireactor;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -12,7 +14,6 @@ import com.github.kdvolder.minireactor.internal.EmptyFlux;
 import com.github.kdvolder.minireactor.internal.ErrorFlux;
 import com.github.kdvolder.minireactor.internal.FilterFlux;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerFlux;
-import com.github.kdvolder.minireactor.internal.RangeFlux;
 import com.github.kdvolder.minireactor.internal.SubcriptionCancelation;
 import com.github.kdvolder.minireactor.internal.TakeFlux;
 
@@ -78,22 +79,25 @@ public abstract class Flux<T> implements Publisher<T> {
 	 */
 	public static Flux<Integer> range(int from, int to) {
 		if (from<to) {
-			return new RangeFlux<Integer>(from) {
-				@Override
-				protected Integer increment(Integer current) {
-					return current + 1;
+			return new DataFlux<Integer>(() -> new Iterator<Integer>() {
+				int next = from;
+				@Override public boolean hasNext() {
+					return next<to;
 				}
-				@Override
-				protected boolean inRange(Integer current) {
-					return current < to;
+				@Override public Integer next() {
+					return next++;
 				}
-				@Override
-				public String toString() {
-					return "["+from+".."+(to-1)+"]";
-				}
-			};
+			});
 		}
 		return empty();
 	}
-	
+
+	@SafeVarargs
+	public static <T> Flux<T> of(T... elements) {
+		if (elements.length==0) {
+			return empty();
+		}
+		return new DataFlux<T>(Arrays.asList(elements));
+	}
+
 }
