@@ -1,10 +1,10 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import java.util.function.Function;
 
 import org.reactivestreams.Subscriber;
 
-import com.github.kdvolder.minireactor.internal.TransformerSubscription;
+import com.github.kdvolder.minireactor.Flux;
 
 public class MapFlux<IN, OUT> extends Flux<OUT> {
 	

@@ -1,10 +1,10 @@
-package com.github.kdvolder.minireactor;
+package com.github.kdvolder.minireactor.internal;
 
 import java.util.Iterator;
 
 import org.reactivestreams.Subscriber;
 
-import com.github.kdvolder.minireactor.internal.DataSubscription;
+import com.github.kdvolder.minireactor.Flux;
 
 public class DataFlux<T> extends Flux<T> {
 	

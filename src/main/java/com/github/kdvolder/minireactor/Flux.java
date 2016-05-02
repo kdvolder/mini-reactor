@@ -10,11 +10,13 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
 import com.github.kdvolder.minireactor.internal.BasicSubscriber;
+import com.github.kdvolder.minireactor.internal.DataFlux;
 import com.github.kdvolder.minireactor.internal.DropFlux;
 import com.github.kdvolder.minireactor.internal.EmptyFlux;
 import com.github.kdvolder.minireactor.internal.ErrorFlux;
 import com.github.kdvolder.minireactor.internal.FilterFlux;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerFlux;
+import com.github.kdvolder.minireactor.internal.MapFlux;
 import com.github.kdvolder.minireactor.internal.SubcriptionCancelation;
 import com.github.kdvolder.minireactor.internal.TakeFlux;
 
