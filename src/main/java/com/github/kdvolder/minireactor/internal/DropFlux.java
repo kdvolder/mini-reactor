@@ -13,8 +13,8 @@ public class DropFlux<T> extends IdentityTransformerFlux<T> {
 	}
 	
 	@Override
-	protected <R> Subscriber<R> createSubscription(Subscriber<R> out) {
-		return new IdentityTransformerSubscription<R>(out) {
+	protected Subscriber<T> createSubscription(Subscriber<? super T> out) {
+		return new IdentityTransformerSubscription<T>(in, out) {
 
 			long dropped = 0;
 			boolean extrasRequested = false;
@@ -29,7 +29,7 @@ public class DropFlux<T> extends IdentityTransformerFlux<T> {
 			}
 			
 			@Override
-			public void onNext(R t) {
+			public void onNext(T t) {
 				if (dropped < toDrop) {
 					dropped++;
 				} else {

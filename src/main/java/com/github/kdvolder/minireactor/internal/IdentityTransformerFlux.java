@@ -22,7 +22,7 @@ public class IdentityTransformerFlux<T> extends Flux<T> {
 	// won't work. It should be possible to generalize and extract an abstract superclass
 	// that has two type parameters one for 'input' and one for 'output'.
 	
-	private Publisher<? extends T> in;
+	protected final Publisher<? extends T> in;
 
 	public IdentityTransformerFlux(Publisher<? extends T> in) {
 		this.in = in;
@@ -33,8 +33,8 @@ public class IdentityTransformerFlux<T> extends Flux<T> {
 		in.subscribe(createSubscription(out));
 	}
 
-	protected <R> Subscriber<R> createSubscription(Subscriber<R> out) {
-		return new IdentityTransformerSubscription<>(out);
+	protected Subscriber<T> createSubscription(Subscriber<? super T> out) {
+		return new IdentityTransformerSubscription<>(in, out);
 	}
 	
 }

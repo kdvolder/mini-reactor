@@ -16,8 +16,8 @@ public class TakeFlux<T> extends IdentityTransformerFlux<T> {
 	}
 	
 	@Override
-	protected <R> Subscriber<R> createSubscription(Subscriber<R> out) {
-		return new IdentityTransformerSubscription<R>(out) {
+	protected Subscriber<T> createSubscription(Subscriber<? super T> out) {
+		return new IdentityTransformerSubscription<T>(in, out) {
 
 			long allowedToRequest = allowedToTake;
 			long taken = 0;
@@ -32,7 +32,7 @@ public class TakeFlux<T> extends IdentityTransformerFlux<T> {
 			}
 			
 			@Override
-			public void onNext(R t) {
+			public void onNext(T t) {
 				super.onNext(t);
 				taken++;
 				if (taken>=allowedToTake) {
