@@ -1,6 +1,8 @@
 Mini-Reactor
 ============
 
+[![Build Status](https://travis-ci.org/kdvolder/mini-reactor.svg?branch=master)](https://travis-ci.org/kdvolder/mini-reactor)
+
 This is a 'toy' implementation of [reactive streams][1] inspired by [Reactor][2].
 
 It implements a very tiny subset of what reactor implements. It strives for the 
