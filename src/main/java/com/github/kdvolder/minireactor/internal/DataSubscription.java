@@ -18,7 +18,7 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 	}
 
 	@Override
-	public void request(long n) {
+	public void onRequest(long n) {
 		incrementDemand(n);
 		satisfyDemand();
 	}
@@ -31,13 +31,13 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 			while (out!=null && demand>0) {
 				try {
 					if (hasNext()) {
-						onNext(next());
+						sendNext(next());
 						decrementDemand();
 					} else {
-						onComplete();
+						sendComplete();
 					}
 				} catch (Exception e) {
-					onError(e);
+					sendError(e);
 				}
 			}
 			sending.set(false);
@@ -72,4 +72,7 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 		}
 	}
 	
+	@Override
+	protected void onCancel() {
+	}
 }

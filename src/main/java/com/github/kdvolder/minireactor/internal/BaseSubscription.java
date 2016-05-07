@@ -19,23 +19,26 @@ public abstract class BaseSubscription<T> implements Subscription {
 	}
 
 	public void illegalArgument(String s) {
-		onError(new IllegalArgumentException(s));
+		sendError(new IllegalArgumentException(s));
 	}
 
-	public void onError(Throwable err) {
-		if (out!=null) {
-			out.onError(err);
-			cancel();
-		}
-	}
-
-	public void onNext(T t) {
+	public final void sendNext(T t) {
+		Subscriber<? super T> out = this.out;
 		if (out!=null) {
 			out.onNext(t);
 		}
 	}
+	
+	public final void sendError(Throwable t) {
+		Subscriber<? super T> out = this.out;
+		if (out!=null) {
+			out.onError(t);
+			cancel();
+		}
+	}
 
-	public void onComplete() {
+	public final void sendComplete() {
+		Subscriber<? super T> out = this.out;
 		if (out!=null) {
 			out.onComplete();
 			cancel();
@@ -43,8 +46,21 @@ public abstract class BaseSubscription<T> implements Subscription {
 	}
 
 	@Override
-	public void cancel() {
-		out = null;
+	public final void cancel() {
+		this.out = null;
+		onCancel();
 	}
 
+	@Override
+	public final void request(long n) {
+		if (n>0) {
+			onRequest(n);
+		} else {
+			illegalArgument("Rule 3.9: request parameter MUST be positive");
+		}
+	}
+
+	protected abstract void onCancel();
+
+	protected abstract void onRequest(long n);
 }

@@ -6,9 +6,9 @@ import org.reactivestreams.tck.TestEnvironment;
 
 import com.github.kdvolder.minireactor.Flux;
 
-public class FluxTest extends PublisherVerification<Integer> {
+public class FluxFilterTCKTest extends PublisherVerification<Integer> {
 
-	public FluxTest() {
+	public FluxFilterTCKTest() {
 		super(new TestEnvironment());
 	}
 

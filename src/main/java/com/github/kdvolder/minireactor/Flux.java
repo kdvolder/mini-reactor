@@ -54,6 +54,10 @@ public abstract class Flux<T> implements Publisher<T> {
 			return this;
 		}
 	}
+		
+	public final Flux<T> cache() {
+		return new InfiniteCacheFlux<T>(this);
+	}
 
 	public final Flux<T> filter(Predicate<? super T> pred) {
 		return new FilterFlux<T>(this, pred);
@@ -105,6 +109,10 @@ public abstract class Flux<T> implements Publisher<T> {
 
 	public <R> Flux<R> map(Function<T, R> f) {
 		return new MapFlux<T, R>(this, f);
+	}
+
+	public static <T> Flux<T> fromIterable(Iterable<T> iterable) {
+		return new DataFlux<>(iterable);
 	}
 
 }

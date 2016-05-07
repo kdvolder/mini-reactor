@@ -13,10 +13,18 @@ public class ErrorFlux<T> extends Flux<T> {
 	}
 
 	@Override
-	public void subscribe(Subscriber<? super T> s) {
-		EmptySubsciption<T> sub = new EmptySubsciption<T>(s);
-		s.onSubscribe(sub);
-		sub.onError(error);
+	public void subscribe(Subscriber<? super T> in) {
+		BaseSubscription<T> sub = new BaseSubscription<T>(in) {
+			@Override
+			protected void onCancel() {
+			}
+
+			@Override
+			protected void onRequest(long n) {
+			}
+		};
+		in.onSubscribe(sub);
+		sub.sendError(error);
 	}
 
 }
