@@ -54,8 +54,8 @@ public abstract class Flux<T> implements Publisher<T> {
 			return this;
 		}
 	}
-		
-	public final Flux<T> cache() {
+	
+	public final Flux<T> cacheAll() {
 		return new InfiniteCacheFlux<T>(this);
 	}
 
