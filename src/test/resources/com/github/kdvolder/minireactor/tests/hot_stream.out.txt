@@ -1,0 +1,13 @@
+Rolling the dice:
+39
+99
+2
+41
+61
+Rolling the dice again:
+15
+85
+2
+75
+13
+!!!COMPLETE!!!
