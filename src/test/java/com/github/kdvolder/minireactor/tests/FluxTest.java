@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.Random;
 
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.github.kdvolder.minireactor.Flux;
 import com.github.kdvolder.minireactor.internal.BasicSubscriber;
 
+@Listeners(TestBracketer.class)
 public class FluxTest {
 
 	/**
