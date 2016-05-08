@@ -63,7 +63,19 @@ public abstract class Flux<T> implements Publisher<T> {
 		return new FilterFlux<T>(this, pred);
 	}
 
-	public final Cancellation consume(Consumer<? super T> consumer) {
+	public final Cancellation subscribe(Consumer<? super T> consumer) {
+		return subscribe(
+				consumer,
+				null,
+				null
+		);
+	}
+
+	public final Cancellation subscribe(
+			Consumer<? super T> onNext,
+			Consumer<? super Throwable> onError,
+			Runnable onComplete
+	) {
 		SubcriptionCancelation cancel = new SubcriptionCancelation();
 		this.subscribe(new BasicSubscriber<T>() {
 			@Override
@@ -74,12 +86,27 @@ public abstract class Flux<T> implements Publisher<T> {
 			
 			@Override
 			public void onNext(T t) {
-				consumer.accept(t);
+				if (onNext!=null) {
+					onNext.accept(t);
+				}
+			}
+			@Override
+			public void onComplete() {
+				if (onComplete!=null) {
+					onComplete.run();
+				}
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				if (onError!=null) {
+					onError.accept(t);
+				}
 			}
 		});
 		return cancel;
 	}
-	
+
 	/**
 	 * Returns a Flux that publishes a range of integers, starting with
 	 * the 'from' element  upto but not including the 'to' element.

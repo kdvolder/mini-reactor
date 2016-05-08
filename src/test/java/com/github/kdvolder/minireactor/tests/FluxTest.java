@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -24,7 +26,12 @@ public class FluxTest {
 	@BeforeMethod
 	public void setupOutputCapture(Method m) {
 		out = new OutputVerifier(m.getName());
-		out.RECORD_OUTPUT = true;
+		out.RECORD_OUTPUT = false;
+	}
+	
+	@AfterMethod
+	public void verifyOutputCapture(ITestResult result) throws Exception {
+		out.verify();
 	}
 	
 	private void println(Object m) {
@@ -38,7 +45,7 @@ public class FluxTest {
 		println("Rolling and RECORDING 5 dice");
 		diceRolls
 		.take(5)
-		.consume((roll) -> println(roll));
+		.subscribe((roll) -> println(roll));
 		
 		println("Replaying 5 Recorded dice and getting 5 more rolls:");
 		diceRolls
@@ -58,7 +65,6 @@ public class FluxTest {
 				println("!!!COMPLETE!!!");
 			}
 		});
-		out.verify();
 	}
 
 	@Test
@@ -68,7 +74,7 @@ public class FluxTest {
 		println("Rolling the dice:");
 		diceRolls
 		.take(5)
-		.consume(this::println);
+		.subscribe(this::println);
 		
 		println("Rolling the dice again:");
 		diceRolls
@@ -87,8 +93,6 @@ public class FluxTest {
 				println("!!!COMPLETE!!!");
 			}
 		});
-		
-		out.verify();
 	}
 
 	/**
@@ -109,46 +113,72 @@ public class FluxTest {
 
 			@Override
 			public Integer next() {
-				return debug("roll", generator.nextInt(100));
+				return generator.nextInt(100);
 			}
-
 		});
 	}
 	
-	private <T> T debug(String msg, T x) {
-		//System.out.println(msg+": "+x);
-		return x;
-	}
-
-	static void main4() {
+	@Test
+	public void map() throws Exception {
 		Flux.of("hello", "goodbye", "cat", "dog", "hoho")
 		.map((word) -> word.length())
-		.consume(System.out::println);
+		.subscribe((wordLen) -> println(wordLen));
 	}
 
-	static void main3() {
+	@Test
+	public void map_empty_stream() throws Exception {
+		Flux.<String>empty()
+		.map((word) -> word.length())
+		.subscribe(
+				(wordLen) 	-> println(wordLen),
+				(error) 	-> println(error.getMessage()),
+				() 			-> println("!!!!complete!!!!")
+		);
+	}
+
+	@Test
+	public void drop_and_take() throws Exception {
 		Flux.range(0, 1000)
 		.drop(14)
 		.take(4)
-		.consume(System.out::println);
+		.subscribe(
+				(wordLen) 	-> println(wordLen),
+				(error) 	-> println(error.getMessage()),
+				() 			-> println("!!!!complete!!!!")
+		);
 	}
 
-	static void main1() {
-		Flux<Integer> num = 
-				Flux.range(0, 1000)
-				.filter((x) -> x%3==0)
-				.take(5)
-				.take(10)
-				;
-		num.consume((x) -> {
-			System.out.println(x);
-		});
+	@Test
+	public void filter() throws Exception {
+		Flux.range(0, 1000)
+		.filter((x) -> x%3==0)
+		.take(5)
+		.take(10)
+		.subscribe(
+				(i) 	-> println(i),
+				(error) -> println(error.getMessage()),
+				() 		-> println("!!!!complete!!!!")
+		);
 	}
 	
-	static void main2() {
-		Flux<Integer> num = Flux.range(0, 10);
-		num.consume((i) -> System.out.println(i));
+	@Test
+	public void range() throws Exception {
+		Flux.range(0, 10)
+		.subscribe(
+				(i) 	-> println(i),
+				(error) -> println(error.getMessage()),
+				() 		-> println("!!!!complete!!!!")
+		);
 	}
 
+	@Test
+	public void range_non_zero_start() throws Exception {
+		Flux.range(5, 10)
+		.subscribe(
+				(i) 	-> println(i),
+				(error) -> println(error.getMessage()),
+				() 		-> println("!!!!complete!!!!")
+		);
+	}
 	
 }

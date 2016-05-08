@@ -68,7 +68,7 @@ public class OutputVerifier {
 			String expectedOutput = CharStreams.toString(new InputStreamReader(is, "utf8"));
 			assertEquals(expectedOutput, actualOutput);
 		} else {
-			assertTrue(RECORD_OUTPUT);
+			assertTrue(RECORD_OUTPUT, "Expected test output has not been defined '"+testFileName+"'");
 			URL myLocation = this.getClass().getResource(this.getClass().getSimpleName()+".class");
 			File myFile = new File(myLocation.toURI());
 			assertTrue(myFile.toString().contains("/target/test-classes/"));
