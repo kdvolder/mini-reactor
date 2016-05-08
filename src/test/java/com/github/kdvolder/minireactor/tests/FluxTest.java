@@ -1,26 +1,17 @@
 package com.github.kdvolder.minireactor.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
 
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import static org.testng.Assert.*;
 
 import com.github.kdvolder.minireactor.Flux;
 import com.github.kdvolder.minireactor.internal.BasicSubscriber;
-import com.google.common.io.CharStreams;
 
+@Listeners(TestBracketer.class)
 public class FluxTest {
 
 	/**
