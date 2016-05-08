@@ -1,6 +1,5 @@
 package com.github.kdvolder.minireactor.tests;
 
-import org.testng.ITestContext;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;

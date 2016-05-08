@@ -10,9 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 
-import org.testng.annotations.Listeners;
-import org.testng.reporters.TextReporter;
-
 import com.google.common.io.CharStreams;
 
 /**
