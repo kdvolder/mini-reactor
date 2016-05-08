@@ -9,7 +9,7 @@ import org.reactivestreams.Subscriber;
  */
 public abstract class DataSubscription<T> extends BaseSubscription<T> {
 	
-	private long demand = 0;
+	private Demand demand = new Demand(0);
 	
 	private AtomicBoolean sending = new AtomicBoolean(false);
 
@@ -19,7 +19,7 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 
 	@Override
 	public void onRequest(long n) {
-		incrementDemand(n);
+		demand.increment(n);
 		satisfyDemand();
 	}
 
@@ -28,11 +28,11 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 		//When already in a 'satisfyDemand' on current thread we can just assume that
 		//the other call will already satisfy all the demand.
 		if (sending.compareAndSet(false, true)) {
-			while (out!=null && demand>0) {
+			while (out!=null && demand.isPositive()) {
 				try {
 					if (hasNext()) {
 						sendNext(next());
-						decrementDemand();
+						demand.decrement();
 					} else {
 						sendComplete();
 					}
@@ -47,28 +47,10 @@ public abstract class DataSubscription<T> extends BaseSubscription<T> {
 	protected abstract boolean hasNext() throws Exception;
 	protected abstract T next() throws Exception;
 
-	protected void decrementDemand() {
-		if (demand!=Long.MAX_VALUE) {
-			demand--;
-		}
-	}
-	
-	protected void incrementDemand(long n) {
-		if (n<=0) {
-			illegalArgument("Rule 3.9: request parameter MUST be positive");
-		}
-		try {
-			demand = Math.addExact(demand, n);
-		} catch (ArithmeticException e) {
-			//Overflowed!
-			demand = Long.MAX_VALUE;
-		}
-	}
-	
 	protected void send(T next) {
 		if (out!=null) {
 			out.onNext(next);
-			decrementDemand();
+			demand.decrement();
 		}
 	}
 	

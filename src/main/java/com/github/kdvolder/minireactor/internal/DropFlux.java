@@ -20,12 +20,12 @@ public class DropFlux<T> extends IdentityTransformerFlux<T> {
 			boolean extrasRequested = false;
 			
 			@Override
-			public void request(long n) {
+			protected void onRequest(long n) {
 				if (!extrasRequested) {
-					n+=toDrop;
-					extrasRequested = false;
+					n = Demand.add(n, toDrop);
+					extrasRequested = true;
 				}
-				super.request(n);
+				super.onRequest(n);
 			}
 			
 			@Override

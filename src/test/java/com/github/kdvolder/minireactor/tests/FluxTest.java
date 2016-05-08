@@ -26,7 +26,7 @@ public class FluxTest {
 	@BeforeMethod
 	public void setupOutputCapture(Method m) {
 		out = new OutputVerifier(m.getName());
-		out.RECORD_OUTPUT = false;
+		out.RECORD_OUTPUT = true;
 	}
 	
 	@AfterMethod
@@ -136,6 +136,17 @@ public class FluxTest {
 		);
 	}
 
+	@Test
+	public void drop() throws Exception {
+		Flux.range(0, 5)
+		.drop(3)
+		.subscribe(
+				(x) -> println(x),
+				(e) -> println(e.getMessage()),
+				() 	-> println("!!!!complete!!!!")
+		);
+	}
+	
 	@Test
 	public void drop_and_take() throws Exception {
 		Flux.range(0, 1000)

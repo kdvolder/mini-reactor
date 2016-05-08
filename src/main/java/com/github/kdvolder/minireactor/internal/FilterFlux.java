@@ -26,10 +26,6 @@ public class FilterFlux<T> extends TransformerFlux<T, T> {
 					super.request(1);
 				}
 			}
-			@Override
-			public void request(long n) {
-				super.request(n);
-			}
 		};
 	}
 }

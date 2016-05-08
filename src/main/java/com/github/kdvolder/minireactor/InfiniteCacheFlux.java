@@ -92,6 +92,7 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 		@Override
 		public void onNext(T t) {
 			cache.add(t);
+			requestFromIn();
 			sendToAllSubscriptions();
 		}
 
@@ -133,11 +134,14 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 			}
 			System.out.println("maxRequested: "+maxRequested);
 			long extra = maxRequested-requested;
-			System.out.println("extra: "+extra);
-			if (extra>0) {
-				System.out.println("requesting from in: "+extra);
-				requested+=maxRequested;
-				inSub.request(extra);
+			long alreadyGot = cache.size();
+			if (alreadyGot==requested) {
+				System.out.println("extra: "+extra);
+				if (extra>0) {
+					System.out.println("requesting from in: "+extra);
+					requested+=1;
+					inSub.request(1);
+				}
 			}
 		}
 	}

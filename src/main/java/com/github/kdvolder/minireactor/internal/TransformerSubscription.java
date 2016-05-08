@@ -15,15 +15,14 @@ import org.reactivestreams.Subscription;
  * It also implements {@link Subscription} to be able to fulfill the role of tracking the Flux<OUT> 
  * subscription state, and present transformed stream to the subscriber on Flux<OUT>.
  */
-public abstract class TransformerSubscription<IN, OUT> implements Subscription, Subscriber<IN> {
+public abstract class TransformerSubscription<IN, OUT> extends BaseSubscription<OUT> implements Subscriber<IN> {
 
-	protected Subscriber<? super OUT> out;
 	protected final Publisher<? extends IN> in;
 	private Subscription inSub;
 	
 	public TransformerSubscription(Publisher<? extends IN> in, Subscriber<? super OUT> out) {
+		super(out);
 		this.in = in;
-		this.out = out;
 	}
 	
 	@Override
@@ -59,9 +58,9 @@ public abstract class TransformerSubscription<IN, OUT> implements Subscription, 
 			cancel();
 		}
 	}
-
+	
 	@Override
-	public void request(long n) {
+	protected void onRequest(long n) {
 		Subscription inSub = this.inSub;
 		if (inSub!=null) {
 			inSub.request(n);
@@ -69,12 +68,12 @@ public abstract class TransformerSubscription<IN, OUT> implements Subscription, 
 	}
 
 	@Override
-	public void cancel() {
+	protected void onCancel() {
 		Subscription inSub = this.inSub;
 		if (inSub!=null) {
 			inSub.cancel();
+			this.inSub = null;
 		}
 		this.out = null;
 	}
-	
 }

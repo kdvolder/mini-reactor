@@ -55,6 +55,10 @@ public abstract class Flux<T> implements Publisher<T> {
 		}
 	}
 	
+	public final Flux<T> log(String msg) {
+		return new LogFlux<T>(this, msg);
+	}
+	
 	public final Flux<T> cacheAll() {
 		return new InfiniteCacheFlux<T>(this);
 	}

@@ -23,11 +23,11 @@ public class TakeFlux<T> extends IdentityTransformerFlux<T> {
 			long taken = 0;
 			
 			@Override
-			public void request(long n) {
+			protected void onRequest(long n) {
 				n = Math.min(n, allowedToRequest);
 				if (n>0) {
 					allowedToRequest-=n;
-					super.request(n);
+					super.onRequest(n);
 				}
 			}
 			
