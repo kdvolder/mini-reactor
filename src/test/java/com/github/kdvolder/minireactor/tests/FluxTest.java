@@ -40,11 +40,15 @@ public class FluxTest {
 	
 	@Test
 	public void infinite_cache() throws Exception {
-		Flux<Integer> diceRolls = diceRoller().cacheAll();
+		Flux<Integer> diceRolls = diceRoller()
+//		.log("roll")
+		.cacheAll();
 
 		println("Rolling and RECORDING 5 dice");
 		diceRolls
+//		.log("cache")
 		.take(5)
+//		.log("take")
 		.subscribe((roll) -> println(roll));
 		
 		println("Replaying 5 Recorded dice and getting 5 more rolls:");

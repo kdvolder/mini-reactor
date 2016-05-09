@@ -2,6 +2,8 @@ package com.github.kdvolder.minireactor;
 
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.kdvolder.minireactor.internal.IdentityTransformerFlux;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerSubscription;
@@ -10,17 +12,18 @@ import com.github.kdvolder.minireactor.util.ExceptionUtil;
 
 public class LogFlux<T> extends IdentityTransformerFlux<T> {
 
-	private String prefix;
+	private final Logger logger;
 
 	public LogFlux(Publisher<T> in, String prefix) {
 		super(in);
-		this.prefix = prefix;
+		this.logger = LoggerFactory.getLogger(prefix);
 	}
 	
 	@Override
 	protected TransformerSubscription<T, T> createSubscription(Subscriber<? super T> out) {
 		return new IdentityTransformerSubscription<T>(in, out) {
 
+			
 //			@Override
 //			public void onSubscribe(Subscription inSub) {
 //				print()
@@ -29,50 +32,33 @@ public class LogFlux<T> extends IdentityTransformerFlux<T> {
 			
 			@Override
 			public void onNext(T t) {
-				log("onNext", t);
+				logger.info("onNext ("+t+")");
 				super.onNext(t);
-			}
-
-			private void log(String string, Object t) {
-				System.out.println(prefix+": "+string+paramStr(t));
-			}
-
-			private String paramStr(Object t) {
-				if (t!=null) {
-					return "("+t+")";
-				}
-				return "";
 			}
 
 			@Override
 			public void onError(Throwable t) {
-				log("onError", ExceptionUtil.getMessage(t));
+				logger.info("onError " + ExceptionUtil.getMessage(t));
 				super.onError(t);
 			}
 
 			@Override
 			public void onComplete() {
-				log("onComplete", null);
-				// TODO Auto-generated method stub
+				logger.info("onComplete");
 				super.onComplete();
 			}
 
 			@Override
 			protected void onRequest(long n) {
-				log("request", n);
-				// TODO Auto-generated method stub
+				logger.info("request "+n);
 				super.onRequest(n);
 			}
 
 			@Override
 			protected void onCancel() {
-				log("cancel", null);
-				// TODO Auto-generated method stub
+				logger.info("cancel");
 				super.onCancel();
 			}
-			
-			
-			
 		};
 	}
 

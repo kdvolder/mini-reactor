@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -22,13 +23,13 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 	 */
 	private long requested = 0;
 	
-	private Flux<T> in;
+	final private AtomicReference<Flux<T>> in;
 	private Subscription inSub = null;
 	
 	private CachedStream cache = new CachedStream();
 	
 	public InfiniteCacheFlux(Flux<T> in) {
-		this.in = in;
+		this.in = new AtomicReference<Flux<T>>(in);
 	}
 
 	private SharedList<MySubscription> subscriptions = new SharedList<>();
@@ -38,7 +39,6 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 
 		protected MySubscription(Subscriber<? super T> out) {
 			super(out);
-			System.out.println("Adding sub: "+this);
 			removeHandle = subscriptions.add(this);
 			out.onSubscribe(this);
 		}
@@ -129,38 +129,50 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 	}
 
 	private void requestFromIn() {
-		System.out.println("requestFromIn");
-		if (in!=null || inSub!=null) {
-			if (inSub==null) {
-				System.out.println("subscribe to in");
-				in.subscribe(this.cache);
-				in = null;
-			}
+		Flux<T> in = this.in.getAndSet(null);
+		if (in!=null) {
+			//this must be the first request.
+			in.subscribe(this.cache);
+		} else {
+			//any
+		}
+		
+		//TODO: this can be called on any subscriber's 'request' thread 
+		//as well as on our incoming subscription 'publishing' thread. 
+		//But the code below almost certainly is not threadsafe.
+		
+		//To solve this it is probably best split this up into two methods
+		//The stuff above and the stuff below serve different purpose and
+		//probably should not be called always together.
+		//E.g. 'in.subscribe' only happens first time we get a request
+		//
+		
+		Subscription inSub = this.inSub;
+		if (inSub!=null) {
 			long maxRequested = 0;
 			for (MySubscription sub : subscriptions) {
 				maxRequested = Math.max(maxRequested, sub.requested);
 			}
-			System.out.println("maxRequested: "+maxRequested);
-			long extra = maxRequested-requested;
 			long alreadyGot = cache.size();
+			if (alreadyGot<maxRequested && 
+				requested < maxRequested
+			) {
+				requested+=1;
+				inSub.request(1);
+			}
+			
+			long extra = maxRequested-requested;
 			if (alreadyGot==requested) {
-				System.out.println("extra: "+extra);
 				if (extra>0) {
-					System.out.println("requesting from in: "+extra);
-					requested+=1;
-					inSub.request(1);
 				}
 			}
 		}
 	}
 
 	private void sendToAllSubscriptions() {
-		System.out.println(">>>sendToAllSubscriptions");
 		for (MySubscription sub : subscriptions) {
-//			System.out.println("sendToAllSubscriptions: "+sub);
 			sub.satisfyDemand();
 		}
-		System.out.println("<<<sendToAllSubscriptions");
 	}
 	
 	@Override
