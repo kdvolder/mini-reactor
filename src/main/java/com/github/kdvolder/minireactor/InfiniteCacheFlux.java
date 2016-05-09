@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import com.github.kdvolder.minireactor.SharedList.ElementHandle;
 import com.github.kdvolder.minireactor.internal.BaseSubscription;
 
 /**
@@ -30,12 +31,15 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 		this.in = in;
 	}
 
-	private Set<MySubscription> subscriptions = new HashSet<>();
+	private SharedList<MySubscription> subscriptions = new SharedList<>();
 
 	private class MySubscription extends BaseSubscription<T> {
+		private ElementHandle removeHandle;
+
 		protected MySubscription(Subscriber<? super T> out) {
 			super(out);
-			subscriptions.add(this);
+			System.out.println("Adding sub: "+this);
+			removeHandle = subscriptions.add(this);
 			out.onSubscribe(this);
 		}
 
@@ -45,7 +49,11 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 
 		@Override
 		protected void onCancel() {
-			subscriptions.remove(this);
+			if (removeHandle!=null) {
+				System.out.println("Removing sub: "+this);
+				removeHandle.remove();
+				removeHandle = null;
+			}
 		}
 
 		@Override
@@ -147,9 +155,12 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 	}
 
 	private void sendToAllSubscriptions() {
+		System.out.println(">>>sendToAllSubscriptions");
 		for (MySubscription sub : subscriptions) {
+//			System.out.println("sendToAllSubscriptions: "+sub);
 			sub.satisfyDemand();
 		}
+		System.out.println("<<<sendToAllSubscriptions");
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import org.reactivestreams.Subscriber;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerFlux;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerSubscription;
 import com.github.kdvolder.minireactor.internal.TransformerSubscription;
+import com.github.kdvolder.minireactor.util.ExceptionUtil;
 
 public class LogFlux<T> extends IdentityTransformerFlux<T> {
 
@@ -45,7 +46,7 @@ public class LogFlux<T> extends IdentityTransformerFlux<T> {
 
 			@Override
 			public void onError(Throwable t) {
-				log("onError", t.getMessage());
+				log("onError", ExceptionUtil.getMessage(t));
 				super.onError(t);
 			}
 
