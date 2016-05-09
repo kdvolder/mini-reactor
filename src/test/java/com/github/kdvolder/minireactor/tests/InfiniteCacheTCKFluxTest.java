@@ -1,8 +1,5 @@
 package com.github.kdvolder.minireactor.tests;
 
-import java.util.Iterator;
-import java.util.Random;
-
 import org.reactivestreams.Publisher;
 import org.reactivestreams.tck.PublisherVerification;
 import org.reactivestreams.tck.TestEnvironment;
@@ -18,11 +15,11 @@ public class InfiniteCacheTCKFluxTest extends PublisherVerification<Integer> {
 	@Override
 	public Publisher<Integer> createPublisher(long elements) {
 		return Flux.range(0, Integer.MAX_VALUE)
-		.log("DATA ")
+//		.log("DATA ")
 		.cacheAll()
-		.log("CACH")
+//		.log("CACH")
 		.take(elements)
-		.log("TAKE")
+//		.log("TAKE")
 		;
 	}
 

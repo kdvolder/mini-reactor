@@ -50,7 +50,6 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 		@Override
 		protected void onCancel() {
 			if (removeHandle!=null) {
-				System.out.println("Removing sub: "+this);
 				removeHandle.remove();
 				removeHandle = null;
 			}
