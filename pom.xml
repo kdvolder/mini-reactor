@@ -41,6 +41,11 @@
 			<version>6.5.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.github.kdvolder</groupId>
+			<artifactId>misc-util</artifactId>
+			<version>0.0.1-M1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
