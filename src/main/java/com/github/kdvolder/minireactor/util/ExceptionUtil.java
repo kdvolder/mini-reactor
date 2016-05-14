@@ -1,8 +1,5 @@
 package com.github.kdvolder.minireactor.util;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class ExceptionUtil {
 
 	public static String getMessage(Throwable t) {

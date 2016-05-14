@@ -1,8 +1,6 @@
 package com.github.kdvolder.minireactor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -54,7 +52,7 @@ public class InfiniteCacheFlux<T> extends Flux<T> {
 				removeHandle = null;
 			}
 		}
-
+	
 		@Override
 		protected void onRequest(long n) {
 			requested+=n;
