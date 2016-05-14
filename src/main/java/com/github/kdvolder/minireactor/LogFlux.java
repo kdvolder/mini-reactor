@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerFlux;
 import com.github.kdvolder.minireactor.internal.IdentityTransformerSubscription;
 import com.github.kdvolder.minireactor.internal.TransformerSubscription;
-import com.github.kdvolder.minireactor.util.ExceptionUtil;
+import com.github.kdvolder.util.ExceptionUtil;
 
 public class LogFlux<T> extends IdentityTransformerFlux<T> {
 

@@ -1,6 +1,6 @@
 package com.github.kdvolder.minireactor.internal;
 
-import com.github.kdvolder.minireactor.util.Assert;
+import com.github.kdvolder.util.Assert;
 
 public class Demand {
 	
@@ -20,12 +20,12 @@ public class Demand {
 	}
 
 	public void decrement() {
-		Assert.isLegal(isPositive());
+		Assert.isLegalState(isPositive());
 		demand --;
 	}
 
 	public void increment(long n) {
-		Assert.isLegal(n>=0);
+		Assert.isLegalArgument("n", n, n>=0);
 		demand = add(demand, n);
 	}
 
