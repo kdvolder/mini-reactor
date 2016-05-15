@@ -1,10 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.kdvolder</groupId>
 	<artifactId>mini-reactor</artifactId>
 	<version>0.0.1</version>
 	<name>mini-reactor</name>
+
+	<url>https://github.com/kdvolder/mini-reactor</url>
+	
+	<scm>
+		<url>https://github.com/kdvolder/mini-reactor</url>
+		<connection>scm:git:git://github.com/kdvolder/mini-reactor.git</connection>
+		<developerConnection>scm:git:git@github.com:kdvolder/mini-reactor.git</developerConnection>
+	</scm>
+	
+	<parent>
+		<groupId>com.github.kdvolder</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+	</parent>
 
 	<dependencies>
 		<dependency>
@@ -47,19 +60,4 @@
 			<version>0.0.1-M2-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>
